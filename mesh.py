@@ -11,23 +11,23 @@ class Mesh:
 		assert len(faces[0]) == 3, "Mesh must be triangulated"	
 		self.vertices = vertices
 		self.faces = faces
-		self._position = position
-		self._rotation = rotation
-		self._scale = scale	
+		self.position = position
+		self.rotation = rotation
+		self.scale = scale	
 		
-		self.model_matrix = make_model_matrix(position, rotation, scale)
+	
 
 	@property	
 	def model_matrix(self):
 		"""
 		returns 4x4 model matrix from translation, rotation, and data data 	
 		""" 
-		sm = tr.scale(scale).T 
-		rx,ry,rz = rotation 
+		sm = tr.scale(self.scale).T 
+		rx,ry,rz = self.rotation 
 		rzm = tr.rotate(rz, [0,0,1]).T 
 		rym = tr.rotate(ry, [0,1,0]).T 
 		rxm = tr.rotate(rx, [1,0,0]).T 
-		trm = tr.translate(translate).T 
+		trm = tr.translate(self.position).T 
 		mm = trm @ rxm @ rym @ rzm @ sm  
 		return mm 
 	
@@ -35,4 +35,3 @@ class Mesh:
 monkey = Mesh('monkey.obj', position=[1,2,3], rotation=[90,45,0], scale=[2,2,2])
 print(monkey.model_matrix)
 print(monkey.position)
-
