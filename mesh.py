@@ -6,10 +6,10 @@ np.set_printoptions(suppress=True, precision=2)
 
 class Mesh:
 	def __init__(self, obj_filename, position, rotation, scale):
-		vertices, faces, normals, texcoords = io.read_mesh('monkey.obj')
+		vertices, faces, normals, texcoords = io.read_mesh(obj_filename)
 		assert len(vertices[0]) == 3, "Vertices incompatible"
 		assert len(faces[0]) == 3, "Mesh must be triangulated"	
-		self.vertices = vertices
+		self.vertices = vertices - np.mean(vertices, axis=0)
 		self.faces = faces
 		self.position = position
 		self.rotation = rotation
@@ -32,6 +32,3 @@ class Mesh:
 		return mm 
 	
 
-monkey = Mesh('monkey.obj', position=[1,2,3], rotation=[90,45,0], scale=[2,2,2])
-print(monkey.model_matrix)
-print(monkey.position)
